@@ -1,0 +1,45 @@
+def pi_function(s: str):
+    """Function creates an array "Pi" for a string "s", that contains a max lenght of suffix
+       witch is also a prefix for every substring s[:i] of string s."""
+    Pi = [0]*len(s)
+    i = 1  # this index checking suffix
+    j = 0  # this index checking prefix
+
+    while i != len(s):
+        if s[i] == s[j]:
+            Pi[i] = j + 1
+            i += 1
+            j += 1
+
+        else:  # s[i] != s[j]
+            if j == 0:
+                Pi[i] = 0
+                i += 1
+
+            else:  # j != 0
+                j = Pi[j-1]
+
+    return Pi
+
+
+def knuth_morris_pratt(s: str, image: str):
+    """The function tryes to find a first appearence of a given "image" in a given string "s".
+       Returns the index of the element in the string "s" where our image starts, or says that
+       "image" wasn't found"""
+    Pi_for_image = pi_function(image)
+    i = 0  # this index checking elements of string "s"
+    j = 0  # this index checking elements of "image"
+
+    while i < len(s):
+        if s[i] == image[j]:
+            i += 1
+            j += 1
+            if j == len(image):  # "j"-index reaches the end of the image that means we found our image!
+                return i - len(image)
+
+        else:  # s[i] != image[j]
+            if j > 0:
+                j = Pi_for_image[j-1]
+            else:  # j == 0
+                i += 1
+    return "Image wasn't found"
