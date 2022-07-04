@@ -1,0 +1,25 @@
+def valid_parentheses(s: str):
+    """the functions checks if parentheses in the string s is in valid order"""
+
+    my_stack = []
+    for parenthese in s:
+        if parenthese not in "(){[]}":  # skip the symbol if it's not a parenthese
+            continue
+        if parenthese in "([{":  # if it's "opened" parenthese - put it in our stack
+            my_stack.append(parenthese)
+        else:  # our symbol must be a "closed" parenthese at this point
+            if my_stack == []:
+                return False
+            # checking for the last "opened" parenthese we put in our stack
+            left_parenthese = my_stack.pop()
+            # in the next steps we are going to determine what our "right" (or "closed") parenthese
+            # should look like in order to match our "left" (or "opened") parenthese
+            if left_parenthese == "(":
+                right_parenthese = ")"
+            elif left_parenthese == "{":
+                right_parenthese = "}"
+            elif left_parenthese == "[":
+                right_parenthese = "]"
+            if parenthese != right_parenthese:
+                return False
+    return my_stack == []
