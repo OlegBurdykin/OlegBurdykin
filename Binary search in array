@@ -1,0 +1,37 @@
+def bin_search_left_border(nums: list, target: int):
+    """This function finds the index of the last element in our array (nums),
+       that is less than the target we are looking for. For examlple,
+       the function will return 2 if wi'll search fo 5 in [0, 2, 3, 7, 8]"""
+    left = -1
+    right = len(nums)
+    while right - left > 1:
+        middle = (right + left)//2
+        if nums[middle] < target:
+            left = middle
+        else:
+            right = middle
+    return left
+
+
+def bin_search_right_border(nums: list, target: int):
+    """This function finds the index of the first element in our array (nums),
+       that is greater than the target we are looking for. For examlple,
+       the function will return 4 if wi'll search fo 5 in [0, 2, 5, 5, 7, 8]"""
+    left = -1
+    right = len(nums)
+    while right - left > 1:
+        middle = (right + left)//2
+        if nums[middle] <= target:
+            left = middle
+        else:
+            right = middle
+    return right
+
+
+left = bin_search_left_border([2, 5, 7, 8, 10], 8)
+right = bin_search_right_border([2, 5, 7, 8, 10], 8)
+
+if right - left == 1:
+    print("The target is not in array")
+else:
+    print(f"The index of the target is {(right+left)//2}")
