@@ -1,0 +1,45 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+        
+    def mergeTwoLists(self, list1, list2):
+        """
+        Given the heads of two sorted singly-linked lists, the function will return the third list,
+        which is the result of merging those two list. The third list will also be sorted in
+        ascending order
+        """
+        cur_1 = list1
+        cur_2 = list2
+        merged_list = None
+        # At this step we'll walk through our given lists and will be adding the smallest of two nodes
+        # at the beggining of our "merged" list. If the value of nodes are equal, we'll add them both
+        while cur_1 and cur_2:
+            if cur_1.val == cur_2.val:
+                merged_list = ListNode(cur_1.val, merged_list)
+                merged_list = ListNode(cur_2.val, merged_list)
+                cur_1 = cur_1.next
+                cur_2 = cur_2.next
+            elif cur_1.val > cur_2.val:
+                merged_list = ListNode(cur_2.val, merged_list)
+                cur_2 = cur_2.next
+            else:
+                merged_list = ListNode(cur_1.val, merged_list)
+                cur_1 = cur_1.next
+        while cur_1:
+            merged_list = ListNode(cur_1.val, merged_list)
+            cur_1 = cur_1.next
+        while cur_2:
+            merged_list = ListNode(cur_2.val, merged_list)
+            cur_2 = cur_2.next
+        # at this point we'll have a merged list that is sorted in decreasing order, since we allways added
+        # elements at the beginning in the previous step. All we have to do now is to reverse our list    
+        prev = None
+        while merged_list:
+            tmp = merged_list
+            merged_list = merged_list.next
+            tmp.next = prev
+            prev = tmp
+        return prev
