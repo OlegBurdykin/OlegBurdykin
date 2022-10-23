@@ -1,0 +1,67 @@
+# G1 is a graph with 3 connected components. Just for example
+G1 = {0: {6, 5, 1},
+      1: {5, 0, 4},
+      2: {6, 3},
+      3: {6, 2},
+      4: {1},
+      5: {0, 1},
+      6: {0, 2, 3},
+      7: {9},
+      8: {10, 11},
+      9: {7},
+      10: {8, 11},
+      11: {8, 10},}
+
+# preorder recursive implementation
+def dfs_recursive(start_vertex, graph, visited=None):
+    """the function does a depth-first search in a given graph, starting from "start_vertex"
+        (could be any vertex)"""
+
+    if visited is None:
+        visited = set()
+    visited.add(start_vertex)
+    for neighbour in graph[start_vertex]:
+        if neighbour not in visited:
+            dfs_recursive(neighbour, graph, visited)
+
+# preorder iterative implementation
+def dfs_iterative(vertex, graph):
+    """the function does a depth-first search in a given graph, starting from "vertex"
+    (could be any vertex)"""
+    visited = set()
+    stack = [vertex]
+    while len(stack) > 0:
+        current_vertex = stack.pop()
+        if current_vertex not in visited:
+            visited.add(current_vertex)
+            for neighbour in graph[current_vertex]:
+                if neighbour not in visited:
+                    stack.append(neighbour)
+                    
+
+def components_count(graph):
+    """This function counts connected components in a givern graph"""
+    components_count = 0
+    components = [None]*len(graph)
+    # the indices of this list represent a vertexes; values - component's number, e.g.
+    # components[5] = 1 meaning that vertex "5" of our graph is in 1th connected component
+    # (count starts with "0")  
+
+    def dfs(vertex, graph, used=None):
+        if used is None:
+            used = set()
+        used.add(vertex)
+        components[vertex] = components_count
+        for neighbour in graph[vertex]:
+            if neighbour not in used:
+                dfs(neighbour, graph, used)
+                components[neighbour] = components_count
+
+
+    used = set()    
+    for vertex in graph:
+        if vertex not in used:
+            dfs(vertex, graph, used)
+            components_count += 1
+            
+    return components # or components_count if we need only a total number of connected components
